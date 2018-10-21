@@ -1,0 +1,23 @@
+Conceptos: 
+Cloud Based Services, Account, Suscription, Resources.
+
+Azure en una plataforma de servicios basados en la nube. Se accede a ella a trvés de una cuenta de usuario (identificador único),
+las suscripciones nos permiten darle permisos y privilegios a nuestro usuario de Azure para el consumo de los recursos disponibles, 
+tales consumo storage, active directory, virtual machines o network infraestructure. 
+
+Azure Account:
+-Acceso a azure.
+-Identificador único.
+-Controlamos el acceso a los recursos de azure.
+-Si somos administradores podemos proveer el acceso a otros usuarios y políticas de seguridad.
+-Podemo dar permisos a nivel de azure subscription.
+
+Azure Susbscription:
+-Concede acceso a los recursos.
+-Podemos tener múltiple susbscriptions asociadas a un azure account.
+-Nos permite vincular el uso de los recursos con una facturación.
+-Tipos: Free, Pay-as-you-go, Visual Studio, Enterprise Agrreements.
+
+Azure Resources:
+-Items administrables y disponibles para su consumo tales como: virtual machine, networking, databases.
+Los recursos son asignados a una suscripción. Los recursos se provisionan.
