@@ -43,5 +43,4 @@ Por ejemplo: Balanceadores de carga, maquinas virtuales, discos duros, redes, et
 
 Virtual machine: Recurso computacional de azure, procesamiento, memoria, almacenamiento y sistema operativo. Es como si fuera una máquina(pc) física en la nube. Se puede incrementar o decrementar el número de máquinas virtuales provisinadas,
 así como su configuración en cuanto a capacidad de procesamiento, memoria, almacenamiento, etc.
-
-
+La utilizamos cuando queremos tener el control sobre el sistema operativo. En azure existe una lista de imágenes de áquinas virtuales preconfiguradas.
