@@ -21,3 +21,27 @@ Azure Susbscription:
 Azure Resources:
 -Items administrables y disponibles para su consumo tales como: virtual machine, networking, databases.
 Los recursos son asignados a una suscripción. Los recursos se provisionan.
+
+Resource Manager:
+Nos permite administrar los grupos de recursos. Podemos agregar elementos de azure a un grupo de recursos con el fin de poder administrar de una mejor forma los recursos provisionados,
+es decir, podemos controlar el dinero consumido por un grupo de recursos, la configuración de los srvicios pertenecientes al mismo, podemos ordenar los recursos y tener plantillas de despliegue
+de los mismos para poder replicarlos cuando queramos o lo necesitemos. En un grupo de recursos generalmente asociamos los elementos que pertenecen a una solución. Nos porporciona un capa de 
+administración consistente y herramientas para realziar dicha adminsitración. Podemos conceder accesos basados en roles.
+
+Azure Region:
+Conjunto de datacenters desplegados con una ubicación geográfica y una latencia perimetral definida. Azure nos proporciona flexibilidad para escoger la region en la cual alojaremos nuestos recursos.
+Azure posee 54 regiones disponibles en 140 paises.
+
+Availability zones:
+Datacenters físicamente separados dentro de un azure region. Una región puede tener varias avaliability zones. 
+
+Para alojar recursos se debe tener en cuenta la disponibilidad, la redundancia y la latencia. No todos los servicios o recursos están disponibles en todas las regiones o zonas. Cada zona y cada región
+tiene su propia lista de recursos disponibles, así como su propia latencia y lugar de replicación.
+
+IAAS(Infraestructura como servicio): Los recursos son manejados y administrados por el usuario. El mantenimiento está acargo del usuario. Acceso a hardware físico o virtualizado, infraestructura de procesamiento.
+Por ejemplo: Balanceadores de carga, maquinas virtuales, discos duros, redes, etc. Se puede escalar tanto horizontal como verticalmente.
+
+Virtual machine: Recurso computacional de azure, procesamiento, memoria, almacenamiento y sistema operativo. Es como si fuera una máquina(pc) física en la nube. Se puede incrementar o decrementar el número de máquinas virtuales provisinadas,
+así como su configuración en cuanto a capacidad de procesamiento, memoria, almacenamiento, etc.
+
+
