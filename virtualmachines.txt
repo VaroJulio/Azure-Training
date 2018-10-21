@@ -1,0 +1,7 @@
+#A. Creación de un grupo de recursos en azure
+
+1. Primero vamos al portal de azure e ingresamos con una cuenta.
+2. Creamos un grupo de recursos:
+    Menú principal --> Grupo de recursos --> agregar
+    Damos un nombre al grupo de recursos: psdemo-rg, escogemos la suscripción a la que pertenece
+    y por último escogemos la ubicación (Region y availability zone).
