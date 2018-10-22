@@ -36,3 +36,42 @@ B. Pasos para Crear una Virtual Machine:
     Asignación de Ip pública.
     Network Security Groups. Firewall configuration.
 
+Lab Virtual Machine
+
+Create Virtual Network:
+-Create a resource.
+-Virtual network.
+-Select deployment model (Resource Manager).
+-Create.
+-Asignarle un nombre.
+-Asignar espacio de direcciones.
+-Escoger la suscripción.
+-Escoger el resource group.
+-Escoger la ubicación.
+-Asignar nombre a la subnet
+-Asignar rangod e direcciones de la subnet.
+-Create.
+
+Create Virtual Machine:
+-Create Resource.
+-Seleccionar la imagen Window Server 2016 VM.
+-Escoger la suscripción.
+-Escoger el grupo de recursos.
+-Asignar nombre a la VM.
+-Asignar ubicación.
+-Asignar disponibilidad.
+-Asignar imagen.
+-Asignar size.
+-Nombre de usuario y contraseña.
+-Regla de puertos de entrada. Habilitar RDP 3389.
+-Siguiente Discos -->
+-Seleccionar opciones de disco (Escogí ssd estándar)
+-Usar disco no administrados (No.)
+-Siguiente Redes --> Realizar la configuración de las redes.
+-Siguiente Administración --> configurar
+-Siguiente Configuración de invitado --> configurar
+-Siguiente Etiquetas --> configurar
+-Siguiente Revisar y crear --> Crear
+
+
+
