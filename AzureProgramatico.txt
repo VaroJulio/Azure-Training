@@ -1,0 +1,15 @@
+Interactuar de forma programática con azure nos permite:
+
+Consistencia y velocidad para los despliegues y provisionamientos de máquinas virtuales.
+Cualquier ambiente productivo puede ser implementado usando automatización.
+También es útil construir ambiente similares como desarrrollo y pruebas.
+
+Podemos interactuar programáticamente con Azure a través de:
+
+Azure CLI: Disponible en todas las plataformas.
+Powershell: Sólo para Windows o Powershell core que es multiplataforma. Lo mas apropiado sería
+instalar el paquete AzureRM --> Resource Manager. Sin este paquete se trabaja con el modelo clásico de 
+despliegue.
+
+CloudShell: El shell o soncola de comandos incorporada en el portal de azure. Tenemos a través de ella Bash,
+powershell y Azure CLI. Guarda los scripts en la carpeta $HOME.
