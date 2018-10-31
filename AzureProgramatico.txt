@@ -13,3 +13,58 @@ despliegue.
 
 CloudShell: El shell o soncola de comandos incorporada en el portal de azure. Tenemos a través de ella Bash,
 powershell y Azure CLI. Guarda los scripts en la carpeta $HOME.
+
+Para crear un VM programáticamente debemos crear en orden los siguientes componentes:
+
+-Resource Group
+-Virtual Network
+-Subnet
+-Public IP 
+-Network Security Group
+-NIC --> Interfaz de red
+-Virtual Machine
+-Open port for management
+
+
+Comandos Azure CLI:
+
+az login --subscription "Visual Studio Professional"
+
+az group create --name "vmcourse-rg" --location "southcentralus"
+
+az group list -o table
+
+az network vnet create --resource-group "vmcourse-rg" --name "vmcourse--vnet-1" --address-prefix "12.1.0.0/16" -- subnet-name "vmcourse-subnet-1" --subnet-prefix "12.1.1.0/24"
+
+az network vnet list -o table
+
+az network public-ip create --resource-group "vmcourse-rg" -- name "vmcourse-linux-pip-1"
+
+az network nsg create --resource-group "vmcourse-rg" --name "vmcourse-linux-nsg-1"
+
+az network nsg list -o table
+
+az network nic create --resource-group "vmcourse-rg" --name "vmcourse-linux-1-nic-1" --vnet-name "vmcourse--vnet-1" --subnet "vmcourse-subnet-1" --network-security-group "vmcourse-linux-nsg-1" --public-ip-address "vmcourse-linux-pip-1"
+
+az network nic list -o table
+
+az vm create --resource-group "vmcourse-rg" --location "southcentralus" --name "vmcourse-linux-1" --nics "vmcourse-linux-1-nic-1" --image "rhel" --admin-username "eladmin" --generate-ssh-keys
+
+az vm create --help
+
+az vm open-port --resource-group "vmcourse-rg" --name "vmcourse-linux-1" --port "22"
+
+az vm list-ip-addresses --name "vmcourse-linux-1" -o table
+
+ssh -l eladmin 104.214.91.188 
+
+
+Comandos PowerShell:
+
+Si tenemos dificultades con los comandos quiere decir que debemos actualizar la versión de powershell.
+
+-Install-Module -Name AzureRM -AllowClobber -Force
+
+-Import-Module AzureRM
+
+Connect-AzureRmAccount -Subscription "Visual Studio Professional"
