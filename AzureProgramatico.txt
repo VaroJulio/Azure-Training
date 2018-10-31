@@ -68,3 +68,25 @@ Si tenemos dificultades con los comandos quiere decir que debemos actualizar la 
 -Import-Module AzureRM
 
 Connect-AzureRmAccount -Subscription "Visual Studio Professional"
+
+New-AzureRmResourceGroup -Name 'demo-rg' -Location 'centralus'
+
+$rg = Get-AzureRmResourceGroup -Name 'demo-rg' -Location 'centralus'
+
+$rg
+
+$subnetConfig = New-AzureRmVirtualNetworkSubnetConfig -Name 'demo-subnet-1' -AddressPrefix '10.3.1.0/24'
+
+$subnetConfig
+
+$vnet = New-AzureRmVirtualNetwork -ResourceGroupName $rg.ResourceGroupName -Location $rg.Location -Name 'demo-vnet-1' -AddressPrefix '10.3.0.0/16' -Subnet $subnetConfig
+
+$vnet
+
+$pip = New-AzureRmPublicIpAddress -ResourceGroupName $rg.ResourceGroupName -Location $rg.Location -Name 'demo-pip-1' -AllocationMethod Static
+
+$pip
+
+$rule1 = New-AzureRmNetworkSecurityRuleConfig -Name ssh-rule -Description 'Allow SSH' -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 22
+
+$rule1
