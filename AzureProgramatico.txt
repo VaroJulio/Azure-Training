@@ -90,3 +90,44 @@ $pip
 $rule1 = New-AzureRmNetworkSecurityRuleConfig -Name ssh-rule -Description 'Allow SSH' -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 22
 
 $rule1
+
+$nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName $rg.ResourceGroupName -Location $rg.Location -Name 'demo-linux-nsg-1' -SecurityRules $rule1
+
+$nsg
+
+$subnet = $vnet.Subnets | Where-Object { $_.Name -eq 'demo-subnet-1'}
+
+$nic = New-AzureRmNetworkInterface -ResourceGroupName $rg.ResourceGroupName -Location $rg.Location -Name 'demo-lin-1-nic-1' -Subnet $Subnet -PublicIpAddress $pip -NetworkSecurityGroup $nsg
+
+$nic
+
+$LinuxVmConfig = New-AzureRmVMConfig -VMName 'demo-linux-1' -VMSize 'Standard_F1'
+
+$password = ConvertTo-SecureString 'password123412123$%^&*' -AsPlainText -Force
+$LinuxCred = New-Object System.MAnagement.Automation.PSCredential ('admindemo', $password)
+
+$LinuxVmConfig = Set-AzureRmVMOperatingSystem -VM $LinuxVmConfig -Linux -ComputerName 'demo-linux-1' -DisablePasswordAuthentication -Credential $LinuxCred
+
+$sshPublicKey = Get-Content "~/.ssh/id_rsa.pub" 
+//$sshPublicKey = Get-Content -Raw "$env:USERPROFILE\.ssh\id_rsa.pub"
+
+Get-Content -Raw "$env:USERPROFILE\.ssh\id_rsa.pub"
+Add-AzureRmVMSshPublicKey -VM $LinuxVmConfig -KeyData $sshPublicKey -Path "/home/admindemo/.ssh/authorized_keys"
+
+Get-AzureRmVMImageSku -Location $rg.Location -PublisherName "Redhat" -Offer "rhel"
+
+$LinuxVmConfig = Set-AzureRmVMSourceImage -VM $LinuxVmConfig -PublisherName 'Redhat' -Offer 'rhel' -Skus '7.4' -Version 'latest'
+
+$LinuxVmConfig = Add-AzureRmVMNetworkInterface -VM $LinuxVmConfig -Id $nic.Id
+
+Get-AzureRmVMSize -Location "CentralUS"
+
+New-AzureRmVM -ResourceGroupName $rg.ResourceGroupName -Location $rg.Location -VM $LinuxVmConfig
+
+$MyIP = Get-AzureRmPublicIpAddress -ResourceGroupName $rg.ResourceGroupName -Name $pip.Name | Select-Object -ExpandProperty IpAddress
+
+$MyIP
+
+ssh -l admindemo $MyIP
+
+Remove-AzureRmResourceGroup -Name "demo-rg" -Force

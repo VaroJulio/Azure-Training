@@ -77,6 +77,3 @@ Create Virtual Machine:
 
 Cuando se provisiona una máquina virtual linux, el acceso a ella no se realiza por RDP sino por ssh. Se debe crear una clave pública ssh. Luego de hacer nuestro primer ingreso, se peude instalar un entorno gráfico como GNOME
 y posteriormente configurar vncserver para poder acceder a la VM por escrityorio remoto.
-
-
-
