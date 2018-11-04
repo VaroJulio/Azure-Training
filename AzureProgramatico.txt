@@ -131,3 +131,58 @@ $MyIP
 ssh -l admindemo $MyIP
 
 Remove-AzureRmResourceGroup -Name "demo-rg" -Force
+
+
+
+#Creando un Máquina virtual de Windows
+
+$password = ConvertTo-SecureString 'password123412123$%^&*' -AsPlainText -Force
+$WindowCred = New-Object System.Management.Automation.PSCredential ('winadmin', $password)
+
+New-AzureRMVm -Image
+
+$vmParams = @{
+    ResourceGroupName = 'windemo-rg'
+    Name = 'windemo-win-1'
+    Location = 'centralus'
+    Size = 'Standard_D1'
+    Image = 'Win2016Datacenter'
+    PublicIpAddressName = 'windemo-win-1-pip-1'
+    Credential = $WindowCred
+    VirtualNetworkName = 'windemo-vnet-1'
+    SubnetName = 'windemo-subnet-1'
+    SecurityGroupName = 'windemo-nsg-1'
+    OpenPorts = 3389
+}
+
+New-AzureRmVM @vmParams
+
+Get-AzureRmPublicIpAddress -ResourceGroupName 'windemo-rg' -Name 'windemo-win-1-pip-1' | Select-Object -ExpandProperty IpAddress
+
+Remove-AzureRmResourceGroup -Name "windemo-rg" -Force
+
+
+##Introducción a AzureCloudShell
+
+Get-ChildItem './Visual Studio Professional/'
+
+Get-AzureRmVM
+
+cd 
+
+gci
+
+cd ./clouddrive/
+
+vi mostrarrecursos.ps1 
+copiamos lo siguietne dentro del archivo: Get-AzureRmVM
+guardamos con :wq
+
+./mostrarrecursos.ps1
+
+##Estados de una máquina virtual
+
+Cuando la provisionamos o la iniciamos está en Starting, luego pasa a estado Running.
+Si apagamos la máquina virtual o le ordenamos detenerse esta en Stopping y luego pasa a estado Stopped.
+Cuando empezamos una deslocalización esta en Deallocating y luego pasa a Deallocated. En este estado no genera cargos de facturación.
+
