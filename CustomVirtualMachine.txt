@@ -1,0 +1,60 @@
+Creando imágenes personalizadas:
+
+-Comenzar con una imagen del market place.
+-Realizar las modificaciones requeridas.
+-Convertirla en una imagen personalziada.
+
+-Subir un VHD de una máquina virtual. Crear a partir de una máquina virtual existente.
+
+Pasos:
+Comenzar con una máquina virtual base.
+Realizarle modificaciones,
+Generalziar o desaprovisionar la imagen.
+Parar y deslocaclizar la máquina virtual.
+Marcar la imagen como generalizada.
+Crear una imagen personalizada.
+Crear máquinas virtuales a partir de una máquina virtual.
+
+OJO: Se debe generalizar una máquina virtual (sysrep) resetea el identificador de seguridad y
+otra información específica de la computadora y el sistema operativo.
+Por último debemos deslocalizar la máquina virtual y apagarla.
+
+Generalizing virtual MAchines
+
+Deprovisioning: 
+Utilizamos el waagent de Azure VM Agent
+Incluido en nuestras imágenes (AZure VM images)
+Podemos descargarlo por nosotros mismos del repositorio empaquetado de distribuciones
+TAmbien disponibles en GitHub
+
+sudo waagent -deprovision+user -force
+---------------------------------------------
+bash
+
+az login --subscription "Visual Studio Professional"
+
+az vm list-ip-addresses -o table
+
+ssh eladmin@104.214.90.64
+
+sudo waagent -deprovision+user -force
+
+exit
+
+az vm deallocate --resource-group "vmcourse-rg" --name "vmcourse-linux-1"
+
+az vm list --show-details -o table
+
+az vm generalize --resource-group "vmcourse-rg" --name "vmcourse-linux-1"
+
+az image create --resource-group "vmcourse-rg" --name "vmcourse-linux-1-image"
+
+az image list
+
+az vm create --resource-group "vmcourse-rg" --location "southcentralus" --name "vmcourse-linux-1-imagenvm" --image "vmcourse-linux-1-image" --admin-username "eladmin" --generate-ssh-keys
+
+#No se puede iniciar la máquina virtual generalizada
+az vm start --name "vmcourse-linux-1" --resource-group "vmcourse-rg"
+
+az vm delete --name "vmcourse-linux-1" --resource-group "vmcourse-rg"
+
