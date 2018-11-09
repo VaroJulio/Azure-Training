@@ -19,7 +19,7 @@ OJO: Se debe generalizar una máquina virtual (sysrep) resetea el identificador 
 otra información específica de la computadora y el sistema operativo.
 Por último debemos deslocalizar la máquina virtual y apagarla.
 
-Generalizing virtual MAchines
+Generalizing virtual Machines
 
 Deprovisioning: 
 Utilizamos el waagent de Azure VM Agent
@@ -58,3 +58,46 @@ az vm start --name "vmcourse-linux-1" --resource-group "vmcourse-rg"
 
 az vm delete --name "vmcourse-linux-1" --resource-group "vmcourse-rg"
 
+
+
+##Ahora vamos a crear una máquina virtual a partir de una imagen utilizando Powershell:
+
+Connect-AzureRmAccount -Subscription "Visual Studio PRofessional"
+
+Debemos conectarnos via RDP a la máquina virtual windows de la cual queremos crear la imagen
+
+%WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe
+
+Get-AzureRmVM -ResourceGroupName 'psdemo-rg' -Name 'psdemo-win-1' -Status
+
+$rg = Get-AzureRmResourceGroup -Name 'psdemo-rg' -Location 'southcentralus'
+
+$rg
+
+$vm = Get-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1"
+
+$vm
+
+Stop-AzureRmVM -ResourceGroupName $rg.ResourceGroupName -Name $vm.Name -Force
+
+
+Get-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name $vm.Name -Status
+
+Set-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name $vm.Name -Generalized
+
+$image = New-AzureRmImageConfig -Location $rg.Location -SourceVirtualMachineId $vm.ID
+
+New-AzureRmImage -ResourceGroupName $rg.ResourceGroupName -Image $image -ImageName "psdemo-win-1-image"
+
+Get-AzureRmImage -ResourceGroupName $rg.ResourceGroupName
+
+$password = ConvertTo-SecureString 'password123412123$%^&*' -AsPlainText -Force
+$WindowsCred = New-Object System.Management.Automation.PSCredential ('demoadmin', $password)
+
+New-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1-vm" -ImageName "psdemo-win-1-image" -Location "southcentralus" -Credential $WindowsCred -VirtualNetworkName 'psdemo-vnet-2' -SubnetName 'psdemo-subnet-2' -SecurityGroupName 'psdemo-win-nsg-2' -OpenPorts 3389
+
+Get-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1-vm"
+
+Remove-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1" -Force
+
+Get-AzureRmImage -ResourceGroupName $rg.ResourceGroupName -ImageName 'psdemo-win-1-vm'
