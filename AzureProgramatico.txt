@@ -185,4 +185,3 @@ guardamos con :wq
 Cuando la provisionamos o la iniciamos está en Starting, luego pasa a estado Running.
 Si apagamos la máquina virtual o le ordenamos detenerse esta en Stopping y luego pasa a estado Stopped.
 Cuando empezamos una deslocalización esta en Deallocating y luego pasa a Deallocated. En este estado no genera cargos de facturación.
-
