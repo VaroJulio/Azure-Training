@@ -101,3 +101,17 @@ Get-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1-vm"
 Remove-AzureRmVm -ResourceGroupName $rg.ResourceGroupName -Name "psdemo-win-1" -Force
 
 Get-AzureRmImage -ResourceGroupName $rg.ResourceGroupName -ImageName 'psdemo-win-1-vm'
+
+
+##Managing custom Machines
+az group create --name "psdemo-rg-1" --location "eastus"
+
+az vm create --location "eastus" --resocurce-group "psdemo-rg-1" --name "psdemo-linux-1e" --image "psdemo-linux-ci-1 --admin-username demouser" --generate-ssh-keys 
+
+az extension add --name image-copy-extension
+
+az image copy --source-object-name "psdemo-linux-ci-1" --source-resource-group "psdemo-rg" --target-location "eastus" --target-resource-group "psdemo-rg-1" --target-name "psdemo-linux-ci-1-east" --cleanup
+
+az image list -o table 
+
+az image delete --resource-group "psdemo-rg-1" --name "psdemo-linux-ci-1-east"
