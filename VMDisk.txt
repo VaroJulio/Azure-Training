@@ -1,0 +1,14 @@
+Existen los Doscos Standard y Premium
+SSD - HDD
+Se pueden aprovisionar a través de un store account
+Existen 2 esquemas de almacenamiento: Windows y Linux
+Windows: C:OS  D:Paginamiento   X:Aplicaciones
+Linux: /dev/sda:OS /dev/sdb: swap /dev/sdx: Aplicaciones
+Mannaged and Unmanaged ----> Administrados por Azure y administrados por usuario.
+Common Disk Administrative Operations:
+-Create/Provision
+-Attach VHD to a VM
+-Prepare de Disk for the OS
+-Snapshot
+-Resize
+-Remove
