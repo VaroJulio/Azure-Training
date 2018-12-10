@@ -12,3 +12,7 @@ Common Disk Administrative Operations:
 -Snapshot
 -Resize
 -Remove
+
+Creating a Disk and attach it to an VM.
+
+az vm disk attach --resource-group "psdemo-rg" --vm-name "UbuntuAlvaro" --disk "UbuntuAlvaro-st0" --new --size-gb 25 --sku "Premium_LRS"
