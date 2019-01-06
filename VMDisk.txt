@@ -1,4 +1,6 @@
-Existen los Doscos Standard y Premium
+#DISK MANAGEMENT IN AZURE
+
+Existen los Discos Standard y Premium
 SSD - HDD
 Se pueden aprovisionar a través de un store account
 Existen 2 esquemas de almacenamiento: Windows y Linux
@@ -13,6 +15,125 @@ Common Disk Administrative Operations:
 -Resize
 -Remove
 
-Creating a Disk and attach it to an VM.
+
+#Creating a Disk and attach it to an VM.
 
 az vm disk attach --resource-group "psdemo-rg" --vm-name "UbuntuAlvaro" --disk "UbuntuAlvaro-st0" --new --size-gb 25 --sku "Premium_LRS"
+
+az vm list-ip-addresses --name "UbuntuAlvaro" --output table
+
+#conectarse a la máquina virtual
+ssh -l demoadmin w.x.y.z
+
+#Listar los volúmenes - Los discos
+lsblk
+
+#Listar Discos
+dmesg | grep SCSI
+
+#Crear particion
+sudo fdisk /dev/sdc
+m
+n
+p
+1
+w
+
+#crear sistema de archivos y formatear
+sudo mkfs -t ext4 /dev/sdc1
+
+#crear directorio para montar el disco
+sudo mkdir /data1
+
+#obtener el UUID - copiarlo y utilizarlo en el siguiente paso
+sudo -i blkid | grep sdc1
+
+#agregar configuración al archivo fstab
+sudo vi /etc/fstab
+# UUID=1283d7f6-7157-4823-85f4-dda63d0b1007 /data1 ext4 defaults 0 0
+
+#montar el volumen
+sudo mount -a
+df -h
+
+
+#CAMBIAR EL TAMAÑO DEL DISCO
+
+#Detener la maquina virtual y deslocalizarlar
+az vm deallocate --resource-group "psdemo-rg" --name "UbuntuAlvaro"
+
+#Listar los discos para buscar el nombre de nuestro disco
+az disk list --output table
+
+#Actualizar el disco
+az disk update --resource-group "psdemo-rg" --name "UbuntuAlvaro-st0" --size--gb 100
+
+#Encender la máquina virtual
+az vm start --resource-group "psdemo-rg" --name "UbuntuAlvaro"
+
+#Obtener la dirección ip
+az vm list-ip-addresses --name "UbuntuAlvaro" --output table
+
+#Conectarnos a la máquina virtual
+ssh -l demoadmin 40.74.249.122
+
+#Comentar la línea donde habiamos montado el disco
+sudo vi /etc/fstab
+
+#Desmontar la unidad
+sudo umount /varoFolder
+
+#Expandir el tamaño de la partición
+sudo parted /dev/sdc
+print
+resizepart
+1
+107GB
+quit
+
+#Expandir y montar el sistema de archivos
+sudo e2fsck -f /dev/sdc1
+sudo resize2fs /dev/sdc1
+sudo mount /dev/sdc1 /varoFolder
+
+#Descomentar la línea donde se declara el montaje del disco
+sudo vi /etc/fstab
+
+df -h | grep varoFolder
+
+#REMOVER DISCO
+
+#conectams a la VM
+ssh -l demoadmin 40.74.249.122
+
+#Desmontar disco
+sudo vi /etc/fstab
+sudo umount /varoFolder
+df -h | grep /varoFolder
+exit
+
+#Desasignar disco de la maquina virtual
+az vm disk detach --resource-group "psdemo-rg" --vm-name "UbuntuAlvaro" --name "UbuntuAlvaro-st0"
+
+#Eliminar disco
+az disk delete --resource-group "psdemo-rg" --name "UbuntuAlvaro-st0"
+
+#TOMAR UNA IMAGEN DE UN DISCO
+
+#Encontrar el disco
+az disk list --output table | grep UbuntuAlvaro
+
+#Crear la imagen
+az snapshot create --resource-group "psdemo-rg" --source "UbuntuAlvaro_OsDisk_1_b646d89b3782401e8aec08ab9be785e7" --name "psdemo-linux-imagen-varo"
+
+#Obtener la lista de imágenes
+az snapshot list --output table
+
+#Crear nuevo disco a partir de imagen
+az disk create --resource-group "psdemo-rg" --name "psdemo-linux-varo-disk" --source "psdemo-linux-imagen-varo" --size-gb "40"
+
+#Crear máquina virtual a partir del disco creado
+az vm create --resource-group "psdemo-rg" --name "psdemo-linux-vm-varo" --attach-os-disk "psdemo-linux-varo-disk" --os-type "Linux"
+
+#Eliminar la imagen
+az snapshot delete --resource-group "psdemo-rg" --name "psdemo-linux-imagen-varo" 
